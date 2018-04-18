@@ -30,7 +30,7 @@ def convertx2e(x,e):
 	while x % 2 == 0:
 		x /= 2
 		e+=1
-	return x
+	return x,e
 
 def order(p, b):
 	if (gcd(p, b) != 1):
@@ -43,6 +43,7 @@ def order(p, b):
 		if (pow(b, k, p) == 1):
 			return k
 		k+=1
+
 def gcd(x,y):
     if (y == 0):
         return x
@@ -61,7 +62,7 @@ def sqrt_mod_prime(n, p):
 	#Shanks algorithm
 	#a and p should be coprime for finding the modular square root
 	if gcd(n,p) != 1:
-		return 0
+		return -1
  
 	#If below expression return (p - 1)  then modular square root is not possible
 	if pow(n,(p-1)//2,p)==(p - 1):
@@ -69,24 +70,24 @@ def sqrt_mod_prime(n, p):
 
 	# expressing p - 1, in terms of s * 2^e,  where s is an odd number
 	e=0
-	s = convertx2e(p - 1, e);
- 
+	s,e = convertx2e(p - 1, e)
 	#finding smallest q such that q ^ ((p - 1) / 2)
 	#(mod p) = p - 1
 	 #q - 1 is in place of  (-1 % p)
 	q=2
 	while(True):
-		if pow(q, (p - 1) // 2, p) == (p - 1):
-			break
 		q+=1
-	x = pow(n,(s + 1) // 2, p);
-	b = pow(n, s, p);
-	g = pow(q, s, p);
- 
+		if pow(int(q), int((p - 1) / 2),int(p)) == (p-1):
+			break
+		
+	x = pow(int(n),int((s + 1) // 2),int(p))
+	b = pow(int(n), int(s),int(p))
+	g = pow(int(q),int(s), int(p))
 	r = e;
- 
+	print(r)
 	# keep looping until b become 1 or m becomes 0
-	while (True):
+	while (1):
+		m=0
 		for m in range(0,r):
 			if (order(p, b) == -1):
 				return -1;
@@ -101,23 +102,21 @@ def sqrt_mod_prime(n, p):
 		x = (x * pow(g, pow(2, r - m - 1), p)) % p;
 		g = pow(g, pow(2, r - m), p);
 		b = (b * g) % p;
- 
 		if b == 1:
 			return x;
 		r = m
    
-
 def siqs_factor_base_primes(n, nf):
 	"""Compute and return nf factor base primes suitable for a Quadratic
 	Sieve on the number n.
 	"""
-	small_primes=[] #List of small primes upto B.
+	small_primes=[] #Compute list of small primes upto B.
 	factor_base = []
 	for p in small_primes:
 		if quad_residue(n, p):
 			t = sqrt_mod_prime(n%p,p)
 			lp = round(log2(p))
-			factor_base.append(FactorBasePrime(p, t, lp))
+			factor_base.append(FactorBasePrime(p, t, lp))	
 			if len(factor_base)>= nf:
 				break
 	return factor_base
@@ -141,6 +140,7 @@ def siqs_sieve(factor_base, m):
 			for a in range(a_start_2 + m, 2 * m + 1, p):
 				sieve_array[a] += lp
 	return sieve_array
+
 def main():
 	n=87463909928837
 	#x=sieve(n)
