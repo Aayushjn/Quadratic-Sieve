@@ -19,33 +19,6 @@ def quad_residue(a,n):
     return z
 
 
-def gcd(a,b):
-	if b==0:
-		return a
-	else:
-		return gcd(b, a%b)
-
-# Returns k such that b^k = 1 (mod p)
-def order(p,q):
-	if gcd(p,q) !=1:
-		print(p,' and ',q,'are not co-prime')
-		return -1
-	k=3
-	while True:
-		if pow(q,k,p)==1:
-			return k
-		k+=1
-
-# function return p - 1 (= x argument) as x * 2^e,
-# where x will be odd sending e as reference because
-# updation is needed in actual e
-def convertx2e(x):
-	e=0
-	while x%2==0:
-		x/=2
-		e+=1
-	return int(x),e
-
 # Main function for finding the modular square root
 def STonelli(n, p): #tonelli-shanks to solve modular square root, x^2 = N (mod p)
     assert quad_residue(n, p) == 1, "not a square (mod p)"
